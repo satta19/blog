@@ -1,0 +1,101 @@
+pipeline {
+	agent any
+	tools {maven "mvn_home"}
+	
+	stages {
+		stage ('Prepare') {
+		steps {
+			echo '\n'
+			echo '****GIT PULL***'
+			checkout scm
+		      }
+		}
+		
+		stage ('Build') {
+		steps {
+			echo '\n'
+			echo '***Starting Build***'
+			sh 'echo $HOME'
+			sh 'mvn clean package'
+		      }
+		}
+
+		stage ('Archive Artifacts') {
+		steps {
+			script
+				{
+				archiveArtifacts artifacts: 'target/*.jar', onlyIfSuccessful: true
+				}
+			}
+		}
+		
+		        stage("publish to nexus") {
+
+            steps {
+
+                script {
+
+                    // Read POM xml file using 'readMavenPom' step , this step 'readMavenPom' is included in: https://plugins.jenkins.io/pipeline-utility-steps
+
+                    pom = readMavenPom file: "pom.xml";
+
+                    // Find built artifact under target folder
+
+                    filesByGlob = findFiles(glob: "target/*.${pom.packaging}");
+
+                    // Print some info from the artifact found
+
+                    echo "${filesByGlob[0].name} ${filesByGlob[0].path} ${filesByGlob[0].directory} ${filesByGlob[0].length} ${filesByGlob[0].lastModified}"
+
+                    // Extract the path from the File found
+
+                    artifactPath = filesByGlob[0].path;
+
+		    echo "$artifactPath"
+			
+			}
+		}	
+		}
+	     }
+	} 
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+pipeline {
+    agent any
+    
+    stages{
+        stage ('Parameter Build')
+        {
+            steps {
+                 echo "$NAME" 
+                 echo "$URL"
+            }
+          
+        }
+        
+        stage ('Copy Artifacts')
+        {
+            steps {
+                    copyArtifacts filter: '**/*.jar', projectName: 'maven-test'                
+            
+            }
+        }
+        
+        stage ('Deploy Artifacts')
+        {
+            steps {
+                script {
+                    filesByGlob = findFiles(excludes: '', glob: 'target/*.jar');
+                    artifactPath = filesByGlob[0].path;
+                    nexusArtifactUploader artifacts: [[artifactId: 'SR-1891', classifier: '', file: artifactPath, type: '.jar']], credentialsId: 'nexus-upload', groupId: 'com.src.SalCus', nexusUrl: 'localhost:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'maven-releases', version: '2.0'
+                }
+            }
+        }
+    }
+    
+    post {
+        always {
+            
+               deleteDir()
+        }
+    }
+}

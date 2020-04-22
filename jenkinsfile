@@ -99,3 +99,55 @@ pipeline {
         }
     }
 }
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Jenkins-shared-library pipeline
+
+@Library('jenkins-shared@master')_
+
+pipeline {
+	agent any
+	tools {maven "mvn_home"}
+	
+	stages {
+		stage ('Prepare') {
+		steps {
+		    script {
+		        git url: "/home/atta/Documents/maventest"
+		    }
+			
+			
+		      }
+		}
+		
+		stage ('Build') {
+		steps {
+			echo '\n'
+			echo '***Starting Build***'
+			sh 'echo $HOME'
+			sh 'mvn clean package'
+		      }
+		}
+	
+		stage ('Deploy Artifacts')
+        {
+            steps {
+                script {
+                    filesByGlob = findFiles(excludes: '', glob: 'target/*.jar');
+                    artifactPath = filesByGlob[0].path;
+                    nexusArtifactUpload  (
+                        artifactid: "SR-1894",
+                        artifactpath: artifactPath, 
+                        type: ".jar", 
+                        credentialsid: "nexus-upload", 
+                        groupid: "com.src.SalCus", 
+                        nexusurl: "localhost:8081", 
+                        nexusversion: "nexus3", 
+                        protocol: "http", 
+                        repository: "maven-releases", 
+                        version: "5.0"
+                    )
+                }
+            }
+        }
+    }
+} 

@@ -1,1 +1,70 @@
 -----------
+pipeline {
+    agent any
+    tools {maven "mvn_home"}
+    stages
+    {
+		stage ('Prepare') {
+		steps {
+			echo '\n'
+			echo '****GIT PULL***'
+			script {
+			    git '/home/atta/Documents/maventest'
+			}
+		      }
+		}
+		
+		stage ('Build') {
+		steps {
+			echo '\n'
+			echo '***Starting Build***'
+			sh 'echo $HOME'
+			sh 'mvn clean package'
+		      }
+		}
+
+        stage ('Build JobB')
+        {
+            steps {
+                echo "${WORKSPACE}"
+                echo "${env.WORKSPACE}"
+                //echo "${params.WORKSPACE}"
+                build job: 'jobB', parameters: [string(name: 'UPSTREAM_WORKSPACE', value: "${env.WORKSPACE}")]
+            }
+        }
+    }
+  }
+  
+  
+  ++++++++++++++++++++++++++++++++++++++++++++++++++++
+  
+  pipeline {
+    agent any
+    
+    stages {
+        //stage ('Echo the workspace name')
+        //{
+          //  steps
+            //{
+              //  echo "${env.UPSTREAM_WORKSPACE}"
+            //}
+        //}
+        stage ('Deploy Artifacts')
+        {
+            steps {
+                dir("${env.UPSTREAM_WORKSPACE}") 
+                {
+                    script {
+                    filesByGlob = findFiles(excludes: '', glob: "target/*.jar");
+                    artifactPath = filesByGlob[0].path;
+                    //echo "artifactPath = ${env.UPSTREAM_WORKSPACE}/target/*.jar"
+                    //sh 'echo $artifactPath'
+                    //sh 'sudo pwd'
+                    nexusArtifactUploader artifacts: [[artifactId: 'SR-1091', classifier: '', file: artifactPath, type: '.jar']], credentialsId: 'nexus-upload', groupId: 'com.src.SalCus', nexusUrl: 'localhost:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'maven-releases', version: '8.0'
+                    }
+            }
+        }
+            
+        }
+    }
+}

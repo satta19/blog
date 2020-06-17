@@ -25,7 +25,7 @@ pipeline {
 					  remote.user = 'root'
 					  remote.allowAnyHosts = true
 				echo '\n'
-			        sshPut remote: remote, from: '/var/lib/jenkins/archive/workspace/test_test_master.git', into: '/opt'
+			        sshPut remote: remote, from: '/var/lib/jenkins/archive/test_master.git', into: '/opt'
 						
 					}
 				}

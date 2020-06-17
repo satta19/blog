@@ -21,7 +21,7 @@ pipeline {
 			steps {
 				echo '\n'
 			        dir('/var/lib/jenkins/archive') {
-				  sudo su - -c 'scp -r /var/lib/jenkins/archive/test_master.git/ root@172.31.33.204:/opt/'
+				  sh 'sudo su - -c 'scp -r /var/lib/jenkins/archive/test_master.git/ root@172.31.33.204:/opt/''
 	}
 			}
 		}

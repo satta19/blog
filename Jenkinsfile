@@ -10,8 +10,12 @@ pipeline {
 		      }
 		}
 		stage ('Create bare repo') {
+			steps {
+			echo '\n'	
 			dir('/var/lib/jenkins/') {
     			sh 'git clone --bare /var/lib/jenkins/workspace/test_master/ test_master.git'
+			}
               }
 	     }
+	}
 	} 

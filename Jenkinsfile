@@ -21,6 +21,7 @@ pipeline {
 			steps {
 				script {
 				def remote = [:]
+					  remote.name = 'ec2-13-235-51-236.ap-south-1.compute.amazonaws'
 					  remote.host = '172.31.33.204'
 					  remote.user = 'root'
 					  remote.allowAnyHosts = true

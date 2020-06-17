@@ -19,10 +19,16 @@ pipeline {
 	     }
 		stage ('Copy the bare repo to other server') {
 			steps {
+				script {
+				def remote = [:]
+					  remote.host = '172.31.33.204'
+					  remote.user = 'root'
+					  remote.allowAnyHosts = true
 				echo '\n'
-			        dir('/var/lib/jenkins/archive') {
-				  sh 'sudo su - -c 'scp -r /var/lib/jenkins/archive/test_master.git/ root@172.31.33.204:/opt/''
-	}
+			        sshPut remote: remote, from: '/var/lib/jenkins/archive/workspace/test_test_master.git', into: '/opt'
+						
+					}
+				}
 			}
 		}
 	} 

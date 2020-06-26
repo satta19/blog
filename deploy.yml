@@ -1,0 +1,12 @@
+---
+
+- name: Ping
+  hosts: all
+
+  tasks:
+  - name: ping
+    win_ping:
+  - name: Copy folder contents recursively
+    win_copy:
+      src: /var/lib/jenkins/ansible-workspace/Maven_Selenium
+      dest: C:\Users\Administrator\Documents\Maven_Selenium\log

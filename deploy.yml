@@ -9,4 +9,4 @@
   - name: Copy folder contents recursively
     win_copy:
       src: /var/lib/jenkins/archive/MyFirstJob.git
-      dest: C:\Users\Administrator\Documents\Maven_Selenium\log
+      dest: C:\Users\Administrator\Documents\

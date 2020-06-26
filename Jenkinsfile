@@ -13,7 +13,7 @@ pipeline {
 			steps {
 			echo '\n'	
 			dir('/var/lib/jenkins/archive') {
-    			sh 'git clone --bare /var/lib/jenkins/workspace/MyFirstJob/ MyFirstJob.git'
+    			sh 'git clone --bare /var/lib/jenkins/workspace/MyFirstJob_master/ MyFirstJob.git'
 			}
               }
 	     }

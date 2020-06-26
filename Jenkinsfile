@@ -29,14 +29,8 @@ pipeline {
             }
         }
 		stage('Ansible Deploy') {
-             
-            steps {
-                 
-              dir('/var/lib/jenkins/ansible-workspace/Install_APT_Packages')
-              {
-               sh 'ansible-playbook deploy.yml'
-               
-            }
+            steps {            
+               sh 'ansible-playbook deploy.yml' 
             }
 	} 
 	}

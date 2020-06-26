@@ -29,4 +29,13 @@ pipeline {
             }
         }
 	} 
+	
+	post {
+        always {
+            echo 'One way or another, I have finished'
+	    dir('/var/lib/jenkins/archive') {
+            deleteDir() /* clean up our workspace */
+	    }
+	}
+        }
 }

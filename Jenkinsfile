@@ -13,24 +13,9 @@ pipeline {
 			steps {
 			echo '\n'	
 			dir('/var/lib/jenkins/archive') {
-    			sh 'git clone --bare /var/lib/jenkins/workspace/test_master/ test_master.git'
+    			sh 'git clone --bare /var/lib/jenkins/workspace/MyFirstJob/ MyFirstJob.git'
 			}
               }
 	     }
-		stage ('Copy the bare repo to other server') {
-			steps {
-				script {
-				def remote = [:]
-					  remote.name = 'ec2-13-235-51-236.ap-south-1.compute.amazonaws'
-					  remote.host = '172.31.33.204'
-					  remote.user = 'root'
-					  remote.allowAnyHosts = true
-				echo '\n'
-			        sshPut remote: remote, from: '/var/lib/jenkins/archive/test_master.git', into: '/opt'
-						
-					}
-				}
-			}
-		
 	} 
 }

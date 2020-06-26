@@ -34,7 +34,7 @@ pipeline {
                  
               dir('/var/lib/jenkins/ansible-workspace/Install_APT_Packages')
               {
-               sh 'ansible all -m ping -i ansiserver'
+               sh 'ansible-playbook deploy.yml'
                
             }
             }

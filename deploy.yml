@@ -11,4 +11,4 @@
       src: /var/lib/jenkins/archive/MyFirstJob.git
       dest: C:\Users\Administrator\Documents\
   - name: Execute git clone command
-    win_command: git clone C:\Users\Administrator\Documents\MyFirstJob.git
+    win_command: C:\Program Files\Git\bin\git.exe clone C:\Users\Administrator\Documents\MyFirstJob.git

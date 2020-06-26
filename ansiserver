@@ -1,0 +1,2 @@
+[aws]
+ec2-13-127-147-168.ap-south-1.compute.amazonaws.com hostname=13.127.147.168 ansible_connection=ssh ansible_ssh_user=administrator ansible_ssh_pass=KjcWu4R.snECx)PRGeRN%hB?gNghDG6K ansible_shell_type=cmd

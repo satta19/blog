@@ -10,3 +10,8 @@
     win_copy:
       src: /var/lib/jenkins/archive/MyFirstJob.git
       dest: C:\Users\Administrator\Documents\
+  - name: Run command on windows
+    win_shell: echo %HOMEDIR%
+    args:
+      executable: cmd
+    register: homedir_out

@@ -10,6 +10,12 @@
     win_copy:
       src: /var/lib/jenkins/archive/MyFirstJob.git
       dest: C:\Users\Administrator\Documents\
+  - name: Setting GIT environment variable
+    win_path:
+      name: PATH
+      elements: C:\Program Files\Git\bin
+      scope: machine
+      state: present
   - name: Run command on windows
     win_shell: git clone C:\Users\Administrator\Documents\MyFirstJob.git
     args:

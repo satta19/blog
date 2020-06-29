@@ -11,7 +11,7 @@
       src: /var/lib/jenkins/archive/MyFirstJob.git
       dest: C:\Users\Administrator\Documents\
   - name: Run command on windows
-    win_shell: echo %HOMEDIR%
+    win_shell: git clone C:\Users\Administrator\Documents\MyFirstJob.git
     args:
       executable: cmd
     register: homedir_out
